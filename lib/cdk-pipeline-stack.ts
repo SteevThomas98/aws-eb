@@ -17,7 +17,7 @@ export class CdkPipelineStack extends Stack {
        synth: new ShellStep('Synth', {
          // Where the source can be found
          input: CodePipelineSource.gitHub('SteevThomas98/aws-eb', 'main', {
-            authentication: cdk.SecretValue.secretsManager('`github-token-steev`'), }),
+            authentication: cdk.SecretValue.secretsManager(`github-token-steev`), }),
          
          // Install dependencies, build and run cdk synth
          installCommands: ['npm i -g npm@latest'],
