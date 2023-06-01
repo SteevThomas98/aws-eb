@@ -2,6 +2,8 @@ import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelin
 import { Construct } from 'constructs';
 import {  Stack, StackProps } from 'aws-cdk-lib';
 import * as cdk from 'aws-cdk-lib';
+import { CdkEBStage } from './eb-stage';
+
 /**
  * The stack that defines the application pipeline
  */
@@ -11,7 +13,7 @@ export class CdkPipelineStack extends Stack {
 
     const pipeline = new CodePipeline(this, 'Pipeline', {
       // The pipeline name
-      pipelineName: 'MyServicePipeline',
+      pipelineName: 'MyServicePipeline_steev',
 
        // How it will be built and synthesized
        synth: new ShellStep('Synth', {
@@ -29,6 +31,18 @@ export class CdkPipelineStack extends Stack {
        }),
     });
 
-    // This is where we add the application stages
+        // This is where we add the application stages
+
+    // deploy beanstalk app
+    // For environment with all default values:
+    // const deploy = new CdkEBStage(this, 'Pre-Prod');
+
+    // For environment with custom AutoScaling group configuration
+    const deploy = new CdkEBStage(this, 'Pre-Prod', { 
+      minSize : "1",
+      maxSize : "2"
+  });
+  const deployStage = pipeline.addStage(deploy); 
+
   }
 }
